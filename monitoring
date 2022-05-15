@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use LWP::UserAgent;
+use HTTP::Request::Common qw( POST );
+
+my $load = `uptime | grep -o 'load average.*' | cut -c 15-18`;
+my $maxload = 0.75; # макисмальная нагрузка (load average)
+
+
+my $access_token = ''; # токен группы
+my $user_ids = ''; # ID пользователя(-ей), которому(-ым) необходимо прислать уведомление (если несколько, то перечислить через запятую)
+my $text_msg = '⛔️ Сервер сильно нагружен.<br>🛠 Текущая нагрузка: '.$load.'🔥 Максимальная нагрузка: '.$maxload; # текст сообщения
+
+if ( $load >= $maxload ) {
+	my $ua      = LWP::UserAgent->new(); 
+	my $request = POST( 'https://api.vk.com/method/messages.send?peer_ids='.$user_ids.'&random_id=0&message='.$text_msg.'&v=5.144&access_token='.$access_token ); 
+	my $content = $ua->request($request)->as_string();
+}
