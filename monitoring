@@ -3,7 +3,7 @@ use LWP::UserAgent;
 use HTTP::Request::Common qw( POST );
 
 my $load = `uptime | grep -o 'load average.*' | cut -c 15-18`;
-my $maxload = 0.75; # макисмальная нагрузка (load average)
+my $maxload = 0.74; # макисмальная нагрузка (load average)
 
 
 my $access_token = ''; # токен группы
